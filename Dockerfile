@@ -1,7 +1,16 @@
 FROM php:fpm
 MAINTAINER Olexy Romanchenko <avariya1@gmail.com>
 
-RUN apt-get update && apt-get -y install git wget zip zlib1g-dev libmemcached-dev libldap2-dev libcurl4-gnutls-dev libxml2-dev
+RUN apt-get update && apt-get -y install \
+git \
+wget \
+zip \
+graphicsmagick \
+zlib1g-dev \
+libmemcached-dev \
+libldap2-dev \
+libcurl4-gnutls-dev \
+libxml2-dev
 
 RUN cd /root && \
     git clone -b php7 https://github.com/php-memcached-dev/php-memcached && \
@@ -19,7 +28,7 @@ RUN cd /root && \
     make && \
     make install
 
-RUN ln -sf /usr/lib/x86_64-linux-gnu/libl* /usr/lib/ && docker-php-ext-install xml curl zip pdo_mysql 
+RUN ln -sf /usr/lib/x86_64-linux-gnu/libl* /usr/lib/ && docker-php-ext-install xml curl zip pdo_mysql mbstring 
 
 RUN echo "extension=memcache.so" > /usr/local/etc/php/conf.d/docker-php-ext-memcache.ini && \
     echo "extension=memcached.so" > /usr/local/etc/php/conf.d/docker-php-ext-memcached.ini
